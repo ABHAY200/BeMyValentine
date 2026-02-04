@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd4e8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0;
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            backdrop-filter: blur(15px);
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4), 
+                        inset 0 0 50px rgba(255, 182, 193, 0.1);
+            border: 2px solid rgba(255, 182, 193, 0.5);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #ff69b4;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
+        }
+
+        .emoji {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease-in-out 3;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 0.5s ease-in-out;
+        }
+
+        @keyframes grow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .grow {
+            animation: grow 0.4s ease-in-out;
+        }
+
+        .question {
+            font-size: 1.8em;
+            color: #ff1493;
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        .buttons-container {
+            position: relative;
+            height: 250px;
+            margin-top: 40px;
+        }
+
+        button {
+            font-size: 1.3em;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Georgia', serif;
+            position: absolute;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+            z-index: 100;
+            left: 30%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #yesBtn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.6);
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+            color: #ff1493;
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+            transition: all 0.3s ease;
+            animation: shake 0.5s ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-5deg); }
+            75% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        #noBtn:hover {
+            animation: wiggle 0.3s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .result {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result h2 {
+            color: #ff1493;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .meme-img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            margin-top: 20px;
+        }
+
+        .celebration {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .emoji {
+                font-size: 3.5em;
+            }
+
+            .question {
+                font-size: 1.6em;
+                margin: 25px 0;
+            }
+
+            button {
+                font-size: 1.2em;
+                padding: 14px 35px;
+                margin: 8px;
+            }
+
+            .buttons-container {
+                height: 220px;
+            }
+
+            .result h2 {
+                font-size: 2.2em;
+            }
+
+            .celebration {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                width: 95%;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+
+            .emoji {
+                font-size: 3em;
+                margin: 15px 0;
+            }
+
+            .question {
+                font-size: 1.3em;
+                margin: 20px 0;
+                line-height: 1.4;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 12px 28px;
+                margin: 6px;
+                white-space: nowrap;
+            }
+
+            .buttons-container {
+                height: 200px;
+                margin-top: 30px;
+            }
+
+            .result h2 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+
+            .celebration {
+                font-size: 2em;
+                margin: 15px 0;
+            }
+
+            .result p {
+                font-size: 1.2em !important;
+                margin: 15px 0 !important;
+            }
+
+            .meme-img {
+                max-width: 100%;
+                margin-top: 15px;
+            }
+
+            .heart {
+                font-size: 25px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .emoji {
+                font-size: 2.5em;
+            }
+
+            .question {
+                font-size: 1.1em;
+            }
+
+            button {
+                font-size: 0.9em;
+                padding: 10px 20px;
+            }
+
+            .buttons-container {
+                height: 180px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            button {
+                /* Larger touch targets for mobile */
+                min-height: 50px;
+                min-width: 120px;
+            }
+
+            #noBtn:active {
+                /* Trigger movement on touch as well */
+                animation: wiggle 0.3s ease-in-out;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="questionSection">
+            <h1>Hey Prety! 💕</h1>
+            <div class="emoji">🌹</div>
+            <p class="question">Will you be my Valentine?</p>
+            
+            <div class="buttons-container">
+                <button id="yesBtn">Yes! 💖</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div id="resultSection" class="result">
+            <h2>Yay! 🎉</h2>
+            <div class="celebration">💕 🎊 💖 🎉 💝</div>
+            <p style="font-size: 1.5em; color: #ff69b4; margin: 20px 0;">I knew you'd say yes!</p>
+            <p style="font-size: 1.5em; color: #ff69b4; margin: 20px 0;">Love you baby</p>
+            <img src="https://i.imgflip.com/4/8p0dh.jpg" alt="Good choice meme" class="meme-img" onerror="this.src='https://media.tenor.com/images/8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c/tenor.gif'; this.alt='Good choice!';">
+            <p style="font-size: 1.8em; color: #ff1493; margin-top: 20px; font-weight: bold;">Good choice! 😘</p>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️', '🌹'];
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 800);
+
+        // Initial hearts
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createHeart, i * 300);
+        }
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionSection = document.getElementById('questionSection');
+        const resultSection = document.getElementById('resultSection');
+        const container = document.querySelector('.container');
+        const questionText = document.querySelector('.question');
+
+        // Funny messages that change as she tries to click No
+        const noButtonTexts = [
+            "No",
+            "Are you sure? 🥺",
+            "Really? 😢",
+            "Think again! 💔",
+            "Don't break my heart! 💔",
+            "But why? 🥺",
+            "Reconsider? 🙏",
+            "No is not an option! 😤",
+            "Just click Yes! 💕",
+            "Come on! 😅",
+        ];
+
+        const questionTexts = [
+            "Will you be my Valentine?",
+            "Come on, say yes! 💕",
+            "You know you want to say yes! 😊",
+            "Just click yes already! 😄",
+            "I see what you're doing! 😏",
+            "You're so stubborn! But I love it! 💖"
+        ];
+
+        let noClickCount = 0;
+        let questionChangeCount = 0;
+
+        // Position No button initially (to the right of Yes button)
+        function positionNoButton() {
+            const buttonsContainer = document.querySelector('.buttons-container');
+            const containerWidth = buttonsContainer.offsetWidth;
+            const containerHeight = buttonsContainer.offsetHeight;
+            
+            // Position to the right of the Yes button initially
+            noBtn.style.left = '70%';
+            noBtn.style.top = '50%';
+            noBtn.style.transform = 'translate(-50%, -50%)';
+        }
+
+        // Wait for layout to be ready
+        setTimeout(positionNoButton, 100);
+
+        // Function to move No button and trigger effects
+        function moveNoButton() {
+            const buttonsContainer = document.querySelector('.buttons-container');
+            const containerWidth = buttonsContainer.offsetWidth;
+            const containerHeight = buttonsContainer.offsetHeight;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+            
+            // Get Yes button dimensions (it's at 30%, 50%)
+            const yesBtnWidth = yesBtn.offsetWidth;
+            const yesBtnHeight = yesBtn.offsetHeight;
+            
+            // Calculate Yes button boundaries (at 30% horizontal, 50% vertical)
+            const yesCenterX = containerWidth * 0.3;
+            const yesCenterY = containerHeight * 0.5;
+            const yesLeft = yesCenterX - yesBtnWidth / 2;
+            const yesRight = yesCenterX + yesBtnWidth / 2;
+            const yesTop = yesCenterY - yesBtnHeight / 2;
+            const yesBottom = yesCenterY + yesBtnHeight / 2;
+            
+            let randomX, randomY;
+            let attempts = 0;
+            const maxAttempts = 50;
+            const padding = 30; // Extra space between buttons
+            
+            // Keep trying until we find a position that doesn't overlap with Yes button
+            do {
+                // Generate random position
+                randomX = Math.random() * (containerWidth - btnWidth);
+                randomY = Math.random() * (containerHeight - btnHeight);
+                
+                // Calculate No button boundaries
+                const noLeft = randomX;
+                const noRight = randomX + btnWidth;
+                const noTop = randomY;
+                const noBottom = randomY + btnHeight;
+                
+                // Check if this position overlaps with Yes button (with padding)
+                const overlaps = !(
+                    noRight + padding < yesLeft ||
+                    noLeft - padding > yesRight ||
+                    noBottom + padding < yesTop ||
+                    noTop - padding > yesBottom
+                );
+                
+                if (!overlaps) break;
+                attempts++;
+            } while (attempts < maxAttempts);
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'none';
+
+            // Change button text
+            noClickCount++;
+            if (noClickCount < noButtonTexts.length) {
+                noBtn.textContent = noButtonTexts[noClickCount];
+            } else {
+                noBtn.textContent = noButtonTexts[Math.floor(Math.random() * noButtonTexts.length)];
+            }
+
+            // Make Yes button grow to attract attention
+            yesBtn.classList.add('grow');
+            setTimeout(() => {
+                yesBtn.classList.remove('grow');
+            }, 400);
+
+            // Change question text occasionally
+            if (noClickCount % 3 === 0 && questionChangeCount < questionTexts.length) {
+                questionText.textContent = questionTexts[questionChangeCount];
+                questionText.classList.add('bounce');
+                setTimeout(() => {
+                    questionText.classList.remove('bounce');
+                }, 1500);
+                questionChangeCount++;
+            }
+
+            // Make the emoji spin
+            const emoji = document.querySelector('.emoji');
+            emoji.classList.add('spin');
+            setTimeout(() => {
+                emoji.classList.remove('spin');
+            }, 500);
+
+            // Create extra hearts when hovering No
+            for (let i = 0; i < 3; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        // Move No button away on hover (desktop)
+        noBtn.addEventListener('mouseenter', moveNoButton);
+
+        // Move No button away on touch start (mobile)
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        // Handle Yes button click
+        yesBtn.addEventListener('click', function() {
+            // Add bounce animation to Yes button
+            yesBtn.classList.add('bounce');
+            
+            setTimeout(() => {
+                questionSection.style.display = 'none';
+                resultSection.style.display = 'block';
+                
+                // Create celebration hearts
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(createHeart, i * 100);
+                }
+            }, 500);
+        });
+
+        // Prevent No button from being clicked (extra safety)
+        noBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Move it again if somehow clicked
+            const containerRect = container.getBoundingClientRect();
+            const buttonsContainer = document.querySelector('.buttons-container');
+            const containerWidth = buttonsContainer.offsetWidth;
+            const containerHeight = buttonsContainer.offsetHeight;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            const maxX = containerWidth - btnWidth;
+            const maxY = containerHeight - btnHeight;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'none';
+
+            // Change text even on click
+            noClickCount++;
+            if (noClickCount < noButtonTexts.length) {
+                noBtn.textContent = noButtonTexts[noClickCount];
+            }
+        });
+
+        // Make Yes button pulse occasionally to draw attention
+        setInterval(() => {
+            yesBtn.classList.add('grow');
+            setTimeout(() => {
+                yesBtn.classList.remove('grow');
+            }, 400);
+        }, 5000);
+    </script>
+</body>
+</html>
