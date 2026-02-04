@@ -549,6 +549,32 @@
             border: 2px solid #dc3545;
         }
 
+        .gift-image-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .gift-image {
+            max-width: 100%;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            margin: 20px 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .gift-caption {
+            font-size: 1.2em;
+            color: #ff1493;
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff0f5;
+            border-radius: 10px;
+            border: 2px solid #ff69b4;
+        }
+
         @media (max-width: 768px) {
             .gift-box {
                 font-size: 100px;
@@ -592,6 +618,11 @@
 
             .close-btn {
                 font-size: 30px;
+            }
+
+            .gift-caption {
+                font-size: 1em;
+                padding: 12px;
             }
         }
 
@@ -639,7 +670,12 @@
             }
 
             .gift-box {
-                font-size: 120px;
+                font-size: 80px;
+            }
+
+            .gift-caption {
+                font-size: 0.9em;
+                padding: 10px;
             }
         }
 
@@ -660,6 +696,11 @@
             .modal button {
                 font-size: 0.95em;
                 padding: 10px;
+            }
+
+            .gift-caption {
+                font-size: 0.85em;
+                padding: 8px;
             }
         }
 
@@ -714,6 +755,12 @@
             <input type="text" id="giftGuess" placeholder="Enter your guess..." autocomplete="off">
             <button id="submitGuess">Submit Guess 💖</button>
             <div id="guessMessage" class="modal-message" style="display: none;"></div>
+            
+            <!-- Gift Image Container (shown when correct) -->
+            <div id="giftImageContainer" class="gift-image-container">
+                <img id="giftImage" class="gift-image" src="" alt="Your Gift!">
+                <p class="gift-caption">📸 Take this screenshot and send to me. Your gift will be delivered soon in exchange for 100 kisses! 💋💖</p>
+            </div>
         </div>
     </div>
 
@@ -987,7 +1034,7 @@
         const guessMessage = document.getElementById('guessMessage');
 
         // Correct answer
-        const correctAnswer = 'prettyruia';
+        const correctAnswer = 'bookofruia';
         let attempts = 0;
 
         // Open modal when gift box is clicked
@@ -1030,7 +1077,7 @@
         });
 
         function checkGuess() {
-            const userGuess = giftGuess.value.trim().toLowerCase();
+            const userGuess = giftGuess.value.split(' ').join('').trim().toLowerCase();
             attempts++;
 
             if (userGuess === '') {
@@ -1040,9 +1087,11 @@
                 return;
             }
 
-            if (userGuess === correctAnswer.toLowerCase()) {
+            console.log(userGuess, correctAnswer);
+
+            if (userGuess === correctAnswer) {
                 // Correct answer!
-                guessMessage.textContent = '🎉 You are correct! Your gift will be delivered soon in exchange for 100 kisses! 💋💖';
+                guessMessage.textContent = '🎉 You are correct!';
                 guessMessage.className = 'modal-message success-message';
                 guessMessage.style.display = 'block';
                 
@@ -1050,6 +1099,21 @@
                 giftGuess.disabled = true;
                 submitGuess.disabled = true;
                 submitGuess.textContent = 'Correct! 🎉';
+                
+                // Hide input and button after a moment
+                setTimeout(() => {
+                    giftGuess.style.display = 'none';
+                    submitGuess.style.display = 'none';
+                    guessMessage.style.display = 'none';
+                }, 1500);
+                
+                // Show the gift image
+                setTimeout(() => {
+                    const giftImageContainer = document.getElementById('giftImageContainer');
+                    const giftImage = document.getElementById('giftImage');
+                    giftImage.src = 'https://github.com/ABHAY200/BeMyValentine/blob/main/IMG_8518.PNG?raw=true';
+                    giftImageContainer.style.display = 'block';
+                }, 1500);
                 
                 // Create lots of celebration hearts
                 for (let i = 0; i < 50; i++) {
