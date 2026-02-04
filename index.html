@@ -11,54 +11,99 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd4e8 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #ffecd2 50%, #fcb69f 75%, #ff9a9e 100%);
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            position: relative;
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* Floating hearts animation */
         .heart {
-            position: absolute;
-            font-size: 30px;
+            position: fixed;
+            font-size: 50px;
             opacity: 0;
-            animation: float 6s infinite;
+            pointer-events: none;
+            z-index: 1;
+            will-change: transform, opacity;
         }
 
-        @keyframes float {
+        @keyframes floatRandom {
             0% {
-                transform: translateY(100vh) rotate(0deg);
                 opacity: 0;
+                transform: translate(0, 0) rotate(0deg) scale(0.5);
             }
             10% {
                 opacity: 1;
+                transform: translate(var(--tx-10), var(--ty-10)) rotate(36deg) scale(1);
+            }
+            30% {
+                opacity: 1;
+                transform: translate(var(--tx-30), var(--ty-30)) rotate(108deg) scale(1.1);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(var(--tx-50), var(--ty-50)) rotate(180deg) scale(0.9);
+            }
+            70% {
+                opacity: 1;
+                transform: translate(var(--tx-70), var(--ty-70)) rotate(252deg) scale(1.05);
             }
             90% {
-                opacity: 1;
+                opacity: 0.8;
+                transform: translate(var(--tx-90), var(--ty-90)) rotate(324deg) scale(0.8);
             }
             100% {
-                transform: translateY(-100vh) rotate(360deg);
                 opacity: 0;
+                transform: translate(var(--tx-100), var(--ty-100)) rotate(360deg) scale(0.3);
             }
         }
 
         .container {
             text-align: center;
-            backdrop-filter: blur(15px);
+            /* backdrop-filter: blur(15px); */
             padding: 60px 40px;
-            border-radius: 30px;
+            /* border-radius: 30px;
             box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4), 
                         inset 0 0 50px rgba(255, 182, 193, 0.1);
-            border: 2px solid rgba(255, 182, 193, 0.5);
+            border: 2px solid rgba(255, 182, 193, 0.5); */
             max-width: 500px;
             width: 90%;
             position: relative;
             z-index: 10;
+            max-height: 100vh;
+            overflow-y: auto;
         }
 
         h1 {
@@ -311,7 +356,7 @@
             }
 
             .heart {
-                font-size: 25px;
+                font-size: 40px;
             }
         }
 
@@ -355,12 +400,286 @@
                 animation: wiggle 0.3s ease-in-out;
             }
         }
+
+        /* Gift Box Styles */
+        .gift-box {
+            font-size: 120px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 30px 0;
+            transition: transform 0.3s ease;
+            animation: giftBounce 2s ease-in-out infinite;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes giftBounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(0) rotate(0deg);
+            }
+            75% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+        }
+
+        /* Modal/Popup Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #fff0f5, #ffe4e9);
+            margin: 5% auto;
+            padding: 40px 30px;
+            border: 3px solid #ff69b4;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.5);
+            animation: slideDown 0.4s ease;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            color: #ff1493;
+            float: right;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 20px;
+            transition: transform 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .modal h3 {
+            color: #ff1493;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-family: 'Georgia', serif;
+            box-sizing: border-box;
+        }
+
+        .modal input:focus {
+            outline: none;
+            border-color: #ff1493;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .modal button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.6);
+        }
+
+        .modal-message {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .success-message {
+            color: #28a745;
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+
+        .error-message {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .gift-box {
+                font-size: 100px;
+            }
+
+            .modal {
+                padding: 10px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+                margin: 10% auto;
+                width: 95%;
+                border-radius: 20px;
+            }
+
+            .modal h3 {
+                font-size: 1.5em;
+                margin-bottom: 15px;
+            }
+
+            .modal p {
+                font-size: 1em !important;
+            }
+
+            .modal input {
+                font-size: 1em;
+                padding: 12px;
+                margin: 15px 0;
+            }
+
+            .modal button {
+                font-size: 1.1em;
+                padding: 12px;
+            }
+
+            .modal-message {
+                font-size: 1em;
+                padding: 12px;
+            }
+
+            .close-btn {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal {
+                padding: 5px;
+            }
+
+            .modal-content {
+                padding: 25px 15px;
+                margin: 5% auto;
+                width: 95%;
+                max-width: none;
+            }
+
+            .modal h3 {
+                font-size: 1.3em;
+                margin-bottom: 10px;
+            }
+
+            .modal p {
+                font-size: 0.9em !important;
+                margin: 10px 0 !important;
+            }
+
+            .modal input {
+                font-size: 0.95em;
+                padding: 10px;
+                margin: 12px 0;
+            }
+
+            .modal button {
+                font-size: 1em;
+                padding: 12px;
+            }
+
+            .modal-message {
+                font-size: 0.9em;
+                padding: 10px;
+                margin-top: 15px;
+            }
+
+            .close-btn {
+                font-size: 28px;
+            }
+
+            .gift-box {
+                font-size: 80px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .modal-content {
+                padding: 20px 12px;
+            }
+
+            .modal h3 {
+                font-size: 1.2em;
+            }
+
+            .modal input {
+                font-size: 0.9em;
+                padding: 10px;
+            }
+
+            .modal button {
+                font-size: 0.95em;
+                padding: 10px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .modal-content {
+                margin: 2% auto;
+                padding: 20px 15px;
+            }
+
+            .modal h3 {
+                font-size: 1.4em;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="questionSection">
-            <h1>Hey Prety! 💕</h1>
+            <h1>Hey Pretty! 💕</h1>
             <div class="emoji">🌹</div>
             <p class="question">Will you be my Valentine?</p>
             
@@ -372,11 +691,30 @@
 
         <div id="resultSection" class="result">
             <h2>Yay! 🎉</h2>
-            <div class="celebration">💕 🎊 💖 🎉 💝</div>
+
             <p style="font-size: 1.5em; color: #ff69b4; margin: 20px 0;">I knew you'd say yes!</p>
-            <p style="font-size: 1.5em; color: #ff69b4; margin: 20px 0;">Love you baby</p>
             <img src="https://i.imgflip.com/4/8p0dh.jpg" alt="Good choice meme" class="meme-img" onerror="this.src='https://media.tenor.com/images/8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c/tenor.gif'; this.alt='Good choice!';">
-            <p style="font-size: 1.8em; color: #ff1493; margin-top: 20px; font-weight: bold;">Good choice! 😘</p>
+            <p style="font-size: 1.8em; color: #ff1493; margin-top: 20px; font-weight: bold;">Love you baby 😘</p>
+            
+            <!-- Gift Box -->
+            <div class="gift-box" id="giftBox" title="Click to open your gift!">
+                🎁
+            </div>
+            <p style="font-size: 1.3em; color: #ff69b4; margin-top: 10px;">Click the gift! 🎁</p>
+        </div>
+    </div>
+
+    <!-- Gift Guessing Modal -->
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h3>🎁 Guess Your Gift! 🎁</h3>
+            <p style="text-align: center; color: #ff69b4; font-size: 1.2em; margin: 15px 0;">
+                What could it be? Take a guess! 💭
+            </p>
+            <input type="text" id="giftGuess" placeholder="Enter your guess..." autocomplete="off">
+            <button id="submitGuess">Submit Guess 💖</button>
+            <div id="guessMessage" class="modal-message" style="display: none;"></div>
         </div>
     </div>
 
@@ -385,24 +723,61 @@
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
-            const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️', '🌹'];
+            const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️'];
             heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            heart.style.animationDelay = Math.random() * 2 + 's';
+            
+            // Random starting position
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+            heart.style.left = startX + 'px';
+            heart.style.top = startY + 'px';
+            heart.style.opacity = 0.5;
+            
+            // Generate random movement path
+            const generateRandomMove = () => {
+                const x = (Math.random() - 0.5) * 400; // Random X movement between -200 and 200
+                const y = (Math.random() - 0.5) * 400; // Random Y movement between -200 and 200
+                return { x, y };
+            };
+            
+            const move10 = generateRandomMove();
+            const move30 = generateRandomMove();
+            const move50 = generateRandomMove();
+            const move70 = generateRandomMove();
+            const move90 = generateRandomMove();
+            const move100 = generateRandomMove();
+            
+            // Set CSS custom properties for random movement
+            heart.style.setProperty('--tx-10', `${move10.x}px`);
+            heart.style.setProperty('--ty-10', `${move10.y}px`);
+            heart.style.setProperty('--tx-30', `${move30.x}px`);
+            heart.style.setProperty('--ty-30', `${move30.y}px`);
+            heart.style.setProperty('--tx-50', `${move50.x}px`);
+            heart.style.setProperty('--ty-50', `${move50.y}px`);
+            heart.style.setProperty('--tx-70', `${move70.x}px`);
+            heart.style.setProperty('--ty-70', `${move70.y}px`);
+            heart.style.setProperty('--tx-90', `${move90.x}px`);
+            heart.style.setProperty('--ty-90', `${move90.y}px`);
+            heart.style.setProperty('--tx-100', `${move100.x}px`);
+            heart.style.setProperty('--ty-100', `${move100.y}px`);
+            
+            // Apply animation with 5 second duration
+            heart.style.animation = 'floatRandom 5s ease-in-out forwards';
+            
             document.body.appendChild(heart);
 
+            // Remove after 5 seconds
             setTimeout(() => {
                 heart.remove();
-            }, 8000);
+            }, 5000);
         }
 
-        // Create hearts periodically
-        setInterval(createHeart, 800);
+        // Create hearts periodically (more frequently)
+        setInterval(createHeart, 400);
 
-        // Initial hearts
-        for (let i = 0; i < 5; i++) {
-            setTimeout(createHeart, i * 300);
+        // Initial hearts (more hearts)
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createHeart, i * 200);
         }
 
         const yesBtn = document.getElementById('yesBtn');
@@ -603,6 +978,114 @@
                 yesBtn.classList.remove('grow');
             }, 400);
         }, 5000);
+
+        // Gift Box and Modal Functionality
+        const giftBox = document.getElementById('giftBox');
+        const giftModal = document.getElementById('giftModal');
+        const closeModal = document.getElementById('closeModal');
+        const submitGuess = document.getElementById('submitGuess');
+        const giftGuess = document.getElementById('giftGuess');
+        const guessMessage = document.getElementById('guessMessage');
+
+        // Correct answer
+        const correctAnswer = 'prettyruia';
+        let attempts = 0;
+
+        // Open modal when gift box is clicked
+        if (giftBox) {
+            giftBox.addEventListener('click', function() {
+                giftModal.style.display = 'block';
+                giftGuess.value = '';
+                guessMessage.style.display = 'none';
+                giftGuess.focus();
+                
+                // Create celebration hearts
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(createHeart, i * 100);
+                }
+            });
+        }
+
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            giftModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === giftModal) {
+                giftModal.style.display = 'none';
+            }
+        });
+
+        // Submit guess
+        submitGuess.addEventListener('click', function() {
+            checkGuess();
+        });
+
+        // Allow Enter key to submit
+        giftGuess.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        function checkGuess() {
+            const userGuess = giftGuess.value.trim().toLowerCase();
+            attempts++;
+
+            if (userGuess === '') {
+                guessMessage.textContent = 'Please enter your guess! 💭';
+                guessMessage.className = 'modal-message error-message';
+                guessMessage.style.display = 'block';
+                return;
+            }
+
+            if (userGuess === correctAnswer.toLowerCase()) {
+                // Correct answer!
+                guessMessage.textContent = '🎉 You are correct! Your gift will be delivered soon in exchange for 100 kisses! 💋💖';
+                guessMessage.className = 'modal-message success-message';
+                guessMessage.style.display = 'block';
+                
+                // Disable input and button
+                giftGuess.disabled = true;
+                submitGuess.disabled = true;
+                submitGuess.textContent = 'Correct! 🎉';
+                
+                // Create lots of celebration hearts
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(createHeart, i * 50);
+                }
+
+                // Make gift box celebrate
+                giftBox.style.animation = 'spin 0.5s ease-in-out, giftBounce 2s ease-in-out infinite';
+            } else {
+                // Wrong answer
+                const encouragements = [
+                    '❌ Not quite! Try again, you can do it! 💪',
+                    '❌ Oops! Think harder, my love! 💭',
+                    '❌ Close, but not quite! Keep guessing! 🤔',
+                    '❌ Nope! But don\'t give up! 💖',
+                    '❌ Wrong answer! Hint: Think about who you are! 😉',
+                    '❌ Try again! You know this! 💕'
+                ];
+                
+                const messageIndex = Math.min(attempts - 1, encouragements.length - 1);
+                guessMessage.textContent = encouragements[messageIndex];
+                guessMessage.className = 'modal-message error-message';
+                guessMessage.style.display = 'block';
+                
+                // Shake the input
+                giftGuess.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    giftGuess.style.animation = '';
+                }, 500);
+                
+                // Clear input for next try
+                giftGuess.value = '';
+                giftGuess.focus();
+            }
+        }
     </script>
 </body>
 </html>
